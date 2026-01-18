@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_ui/Helpers/Resources/ResponsiveUI.dart';
 import 'package:food_ui/Helpers/Resources/Styles.dart';
-import 'package:food_ui/Providers/FavouriteProvider/favouriteProvider.dart';
+import 'package:food_ui/Providers/FavouriteProvider/FavouriteProvider.dart';
 
 class FavouritesScreen extends ConsumerStatefulWidget {
   const FavouritesScreen({super.key});
@@ -82,6 +82,8 @@ class _FavouritesScreenState extends ConsumerState<FavouritesScreen> {
                   onDismissed: (direction) {
                     setState(() {
                       ref.read(favouriteProvider.notifier).removeProduct(item);
+
+                      ref.read(homeScreenProvider.notifier).removeFavProduct(item);
                     });
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -129,7 +131,7 @@ class _FavouritesScreenState extends ConsumerState<FavouritesScreen> {
                               ),
                               SizedBox(height: 5.h),
                               Text(
-                                'N${item['price']}',
+                                '\$${item['price']}',
                                 style: Styles.productPrice.copyWith(
                                   fontSize: 15.sp,
                                 ),

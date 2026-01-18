@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_ui/Pages/CartScreen/CartScreen.dart';
 import 'package:food_ui/Pages/HomeScreen/HomeScreen.dart';
 import 'package:food_ui/Pages/LoginScreen/LoginScreen.dart';
 import 'package:food_ui/Pages/OnboardingScreen/OnboardingScreen.dart';
@@ -17,6 +18,7 @@ enum AppScreen {
   RootScreen,
   ForgetPasswordScreen,
   HomeScreen,
+  CartScreen,
 }
 
 /// ============================
@@ -70,5 +72,10 @@ class NavigationConfig {
   static var homeScreen = ScreenConfig(
     screen: AppScreen.HomeScreen,
     builder: (_) => HomeScreen(),
+  );
+
+  static var cartScreen = ScreenConfig(
+    screen: AppScreen.CartScreen,
+    builder: (_) => CartScreen(),
   );
 }

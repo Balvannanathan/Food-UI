@@ -1,12 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 import 'package:food_ui/Helpers/Resources/ResponsiveUI.dart';
 import 'package:food_ui/Helpers/Resources/Styles.dart';
 import 'package:food_ui/Pages/HomeScreen/HomeScreenModel.dart';
-import 'package:food_ui/Pages/HomeScreen/HomeScreenVM.dart';
-import 'package:food_ui/Providers/FavouriteProvider/favouriteProvider.dart';
+import 'package:food_ui/Providers/CartProvider/CartProvider.dart';
+import 'package:food_ui/Providers/FavouriteProvider/FavouriteProvider.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -19,11 +18,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   double _opacity = 0;
-
-  final homeScreenProvider =
-      StateNotifierProvider<HomeScreenVM, HomeScreenModel>(
-        (ref) => HomeScreenVM(),
-      );
 
   @override
   void initState() {
@@ -124,6 +118,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       homeState.groupedProducts.keys.length,
                       (index) => _buildCarousel(
                         homeState.groupedProducts.values.elementAt(index),
+                        homeState,
                       ),
                     ),
                   ),
@@ -136,7 +131,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     );
   }
 
-  Widget _buildCarousel(List<Map<String, dynamic>> products) {
+  Widget _buildCarousel(
+    List<Map<String, dynamic>> products,
+    HomeScreenModel homeState,
+  ) {
     return CarouselSlider(
       options: CarouselOptions(
         height: 270.h,
@@ -206,8 +204,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     bottom: 0.h,
                     left: 0.w,
                     child: GestureDetector(
-                      onTap: (){
-                        ref.read(favouriteProvider.notifier).addProduct(i);
+                      onTap: () {
+                        ref
+                            .read(homeScreenProvider.notifier)
+                            .toggleFavorite(i)
+                            .then(
+                              (value) => ref
+                                  .read(favouriteProvider.notifier)
+                                  .addAllFavourites(
+                                    ref.read(homeScreenProvider).favorites,
+                                  ),
+                            );
                       },
                       child: Container(
                         width: 50.w,
@@ -220,7 +227,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           ),
                         ),
                         child: Icon(
-                          Icons.favorite_border,
+                          homeState.favorites.any(
+                                (element) => element['id'] == i['id'],
+                              )
+                              ? Icons.favorite
+                              : Icons.favorite_border,
                           color: AppColors.primaryWhite,
                           size: 24.sp,
                         ),
@@ -230,20 +241,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   Positioned(
                     bottom: 0,
                     right: 0,
-                    child: Container(
-                      width: 50.w,
-                      height: 50.h,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryOrange,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.r),
-                          bottomRight: Radius.circular(20.r),
+                    child: GestureDetector(
+                      onTap: () {
+                        ref
+                            .read(homeScreenProvider.notifier)
+                            .toggleCart(i)
+                            .then(
+                              (value) => ref
+                                  .read(cartProvider.notifier)
+                                  .addAllItems(
+                                    ref.read(homeScreenProvider).cartProducts,
+                                  ),
+                            );
+                      },
+                      child: Container(
+                        width: 50.w,
+                        height: 50.h,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryOrange,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.r),
+                            bottomRight: Radius.circular(20.r),
+                          ),
                         ),
-                      ),
-                      child: Icon(
-                        Icons.add,
-                        color: AppColors.primaryWhite,
-                        size: 24.sp,
+                        child: Icon(
+                          homeState.cartProducts.any(
+                                (element) => element['id'] == i['id'],
+                              )
+                              ? Icons.done_rounded
+                              : Icons.add,
+                          color: AppColors.primaryWhite,
+                          size: 24.sp,
+                        ),
                       ),
                     ),
                   ),
@@ -296,10 +325,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           width: 22.w,
           height: 14.67.h,
         ),
-        Image.asset(
-          "lib/Helpers/Resources/Images/shop-cart.png",
-          width: 24.w,
-          height: 24.h,
+        GestureDetector(
+          onTap: () {
+            ref.read(homeScreenProvider.notifier).navigateToCartScreen();
+          },
+          child: Badge.count(
+            count: ref.read(cartProvider).cartProducts.length,
+            backgroundColor: AppColors.primaryOrange,
+            isLabelVisible: ref.read(cartProvider).cartProducts.isNotEmpty,
+            offset: Offset(8, -5),
+            child: Image.asset(
+              "lib/Helpers/Resources/Images/shop-cart.png",
+              width: 24.w,
+              height: 24.h,
+            ),
+          ),
         ),
       ],
     );

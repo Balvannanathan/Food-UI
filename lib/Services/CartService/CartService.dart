@@ -5,6 +5,7 @@ class CartService implements ICartSevice {
   Future<List<Map<String, dynamic>>> getAllProducts() async {
     return [
       {
+        "id": 1,
         "image": "item1.png",
         "name": "Veggie mix",
         "price": 200,
@@ -12,6 +13,7 @@ class CartService implements ICartSevice {
         "description": "Veggie tomato mix",
       },
       {
+        "id": 2,
         "image": "item2.png",
         "name": "Chicken",
         "price": 250,
@@ -19,6 +21,7 @@ class CartService implements ICartSevice {
         "description": "Chicken with mint",
       },
       {
+        "id": 3,
         "image": "item3.png",
         "name": "Spicy fish",
         "price": 600,
@@ -26,6 +29,7 @@ class CartService implements ICartSevice {
         "description": "Spicy fish sauce",
       },
       {
+        "id": 4,
         "image": "item4.png",
         "name": "Moi-moi.",
         "price": 900,
@@ -33,6 +37,7 @@ class CartService implements ICartSevice {
         "description": "Moi-moi and ekpa.",
       },
       {
+        "id": 5,
         "image": "item5.png",
         "name": "Chicken Fry",
         "price": 400,
@@ -40,6 +45,7 @@ class CartService implements ICartSevice {
         "description": "Fried chicken m.",
       },
       {
+        "id": 6,
         "image": "item6.png",
         "name": "Coke",
         "price": 400,
@@ -47,6 +53,7 @@ class CartService implements ICartSevice {
         "description": "Coke",
       },
       {
+        "id": 7,
         "image": "item7.png",
         "name": "Fanta",
         "price": 400,
@@ -54,6 +61,7 @@ class CartService implements ICartSevice {
         "description": "Fanta",
       },
       {
+        "id": 8,
         "image": "item8.png",
         "name": "Sprite",
         "price": 400,
@@ -61,6 +69,7 @@ class CartService implements ICartSevice {
         "description": "Sprite",
       },
       {
+        "id": 9,
         "image": "item6.png",
         "name": "Pepsi",
         "price": 400,
@@ -68,6 +77,7 @@ class CartService implements ICartSevice {
         "description": "Pepsi",
       },
       {
+        "id": 10,
         "image": "item10.png",
         "name": "Water",
         "price": 30,
@@ -75,6 +85,7 @@ class CartService implements ICartSevice {
         "description": "Water",
       },
       {
+        "id": 11,
         "image": "item11.png",
         "name": "Biscuits",
         "price": 30,
@@ -82,6 +93,7 @@ class CartService implements ICartSevice {
         "description": "Biscuits",
       },
       {
+        "id": 12,
         "image": "item12.png",
         "name": "Cookies",
         "price": 30,
@@ -89,6 +101,7 @@ class CartService implements ICartSevice {
         "description": "Cookies",
       },
       {
+        "id": 13,
         "image": "item13.png",
         "name": "Sandwitch",
         "price": 30,
@@ -96,6 +109,7 @@ class CartService implements ICartSevice {
         "description": "Sandwitch",
       },
       {
+        "id": 14,
         "image": "item14.png",
         "name": "Burger",
         "price": 30,
@@ -103,6 +117,7 @@ class CartService implements ICartSevice {
         "description": "Burger",
       },
       {
+        "id": 15,
         "image": "item15.png",
         "name": "Fries",
         "price": 30,

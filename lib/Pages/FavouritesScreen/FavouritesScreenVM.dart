@@ -34,4 +34,14 @@ class FavouriteProvider extends StateNotifier<FavouriteScreenModel> {
       ex.logException();
     }
   }
+
+  void addAllFavourites(List<Map<String, dynamic>> data) {
+    try {
+      state = state.copywith(
+        favouriteProducts: [...data],
+      );
+    } on Exception catch (ex) {
+      ex.logException();
+    }
+  }
 }
