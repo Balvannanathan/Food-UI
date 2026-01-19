@@ -13,9 +13,20 @@ class CartScreen extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _CartScreenState();
 }
 
-class _CartScreenState extends ConsumerState<CartScreen> {
+class _CartScreenState extends ConsumerState<CartScreen>
+    with SingleTickerProviderStateMixin {
   List<Map<String, dynamic>> get _cartItems =>
       ref.watch(cartProvider).cartProducts;
+
+  SlidableController? _controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _controller = SlidableController(this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +51,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           ),
         ),
       ),
+      
       body: _cartItems.isEmpty
           ? Center(
               child: Column(
@@ -63,6 +75,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 final item = _cartItems[index];
                 return Slidable(
                   closeOnScroll: true,
+                  controller: _controller,
                   endActionPane: ActionPane(
                     motion: ScrollMotion(),
                     children: [
@@ -76,13 +89,35 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
                             GestureDetector(
                               onTap: () {
-                                ref
-                                    .read(favouriteProvider.notifier)
-                                    .addProduct(item);
+                                if (ref
+                                    .watch(favouriteProvider)
+                                    .favouriteProducts
+                                    .contains(item)) {
+                                  ref
+                                      .read(favouriteProvider.notifier)
+                                      .removeProduct(item);
 
-                                ref
-                                    .read(cartProvider.notifier)
-                                    .addFavouriteProduct(item);
+                                  ref
+                                      .read(cartProvider.notifier)
+                                      .removeFavouriteProduct(item);
+                                  ref
+                                      .read(homeScreenProvider.notifier)
+                                      .removeFavProduct(item);
+                                } else {
+                                  ref
+                                      .read(favouriteProvider.notifier)
+                                      .addProduct(item);
+
+                                  ref
+                                      .read(homeScreenProvider.notifier)
+                                      .toggleFavorite(item);
+
+                                  ref
+                                      .read(cartProvider.notifier)
+                                      .addFavouriteProduct(item);
+                                }
+
+                                _controller?.close();
                               },
                               child: Container(
                                 width: 55.w,
@@ -106,12 +141,21 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                             SizedBox(width: 10.w),
                             GestureDetector(
                               onTap: () {
-                                ref
-                                    .read(cartProvider.notifier)
-                                    .removeProduct(item);
-                                ref
-                                    .read(homeScreenProvider.notifier)
-                                    .removeCartProduct(item);
+                                _controller?.dismiss(
+                                  ResizeRequest(
+                                    Duration(milliseconds: 400),
+                                    () {
+                                      ref
+                                          .read(cartProvider.notifier)
+                                          .removeProduct(item);
+                                      ref
+                                          .read(homeScreenProvider.notifier)
+                                          .removeCartProduct(item);
+                                    },
+                                  ),
+                                  curve: Curves.slowMiddle,
+                                  duration: Duration(milliseconds: 400),
+                                );
                               },
                               child: Container(
                                 width: 55.w,

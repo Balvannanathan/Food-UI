@@ -54,6 +54,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       onTap: () => primaryFocus?.unfocus(),
       child: Scaffold(
         backgroundColor: AppColors.homeBackground,
+        resizeToAvoidBottomInset: false,
         body: Padding(
           padding: EdgeInsets.only(top: 65.h),
           child: Column(
@@ -65,7 +66,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildAppBar(),
-                    SizedBox(height: 43.h),
+                    SizedBox(height: 35.h),
                     SizedBox(
                       width: 210.w,
                       child: Text(
@@ -320,11 +321,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Image.asset(
-          "lib/Helpers/Resources/Images/menu.png",
-          width: 22.w,
-          height: 14.67.h,
-        ),
+        // Image.asset(
+        //   "lib/Helpers/Resources/Images/menu.png",
+        //   width: 22.w,
+        //   height: 14.67.h,
+        // ),
+        SizedBox(),
+
         GestureDetector(
           onTap: () {
             ref.read(homeScreenProvider.notifier).navigateToCartScreen();

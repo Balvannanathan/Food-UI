@@ -13,6 +13,7 @@ class AppColors {
   static const Color secondaryGrey = Color(0xff393939);
 
   static Color bottomNavShadow = Color(0xffD73800).withOpacity(0.4);
+  static Color ratioColor = Color(0xff9F9F9F);
 }
 
 class Styles {
@@ -79,4 +80,7 @@ class Styles {
     fontSize: 15,
     color: AppColors.primaryBlack.withOpacity(0.4),
   );
+
+  static TextStyle get paymentText =>
+      _base(fontFamily: "REGULAR", fontSize: 17, color: AppColors.primaryBlack);
 }

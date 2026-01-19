@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/legacy.dart';
+import 'package:food_ui/Helpers/Navigations/NavigationConfig.dart';
 import 'package:food_ui/Helpers/Navigations/NavigationMixin.dart';
 import 'package:food_ui/Helpers/Utility/ErrorHandling.dart';
 import 'package:food_ui/Pages/CartScreen/CartScreenModel.dart';
